@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: db-migrate-
+  namespace: jaga-bumi
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+        - name: migrate
+          image: fierynxx/jaga-bumi:latest
+          imagePullPolicy: Always
+
+          command: ["php", "artisan", "migrate", "--force"]
+
+          envFrom:
+            - secretRef:
+                name: laravel-secret
+
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: laravel-secret
+                  key: DB_PASSWORD
+            - name: DB_HOST
+              value: "mysql-service"
+
+      restartPolicy: Never
+      backoffLimit: 1
