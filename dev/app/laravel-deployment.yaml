@@ -24,7 +24,7 @@ spec:
 
       containers:
         - name: laravel
-          image: fierynxx/jaga-bumi:1fa1eb7
+          image: fierynxx/jaga-bumi:ac99616
           imagePullPolicy: Always
           ports:
             - containerPort: 80
