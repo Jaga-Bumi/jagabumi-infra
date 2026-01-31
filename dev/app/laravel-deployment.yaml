@@ -24,11 +24,10 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: false
+            runAsUser: 0
             capabilities:
               drop:
                 - ALL
-              add:
-                - CHOWN
             seccompProfile:
               type: RuntimeDefault
           volumeMounts:
