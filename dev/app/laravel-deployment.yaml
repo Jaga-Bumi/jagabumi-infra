@@ -16,13 +16,19 @@ spec:
         - name: fix-permissions
           image: busybox
           command:
-            ["sh", "-c", "chown -R 33:33 /var/www/html/storage/app/public"]
+            [
+              "sh",
+              "-c",
+              "chown -R 33:33 /var/www/html/storage/app/public 2>/dev/null || true",
+            ]
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: false
             capabilities:
               drop:
                 - ALL
+              add:
+                - CHOWN
             seccompProfile:
               type: RuntimeDefault
           volumeMounts:
