@@ -1,12 +1,13 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  generateName: db-migrate-
+  name: db-migrate
   namespace: jaga-bumi
   annotations:
     argocd.argoproj.io/hook: PreSync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
+  backoffLimit: 1
   template:
     spec:
       containers:
@@ -30,4 +31,3 @@ spec:
               value: "mysql-service"
 
       restartPolicy: Never
-      backoffLimit: 1

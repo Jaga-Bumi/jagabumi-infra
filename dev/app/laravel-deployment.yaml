@@ -1,23 +1,30 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: serving.knative.dev/v1
+kind: Service
 metadata:
   name: laravel-app
   namespace: jaga-bumi
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: laravel
   template:
     metadata:
-      labels:
-        app: laravel
+      annotations:
+        autoscaling.knative.dev/min-scale: "1"
+        autoscaling.knative.dev/max-scale: "5"
+        autoscaling.knative.dev/target: "100"
+        autoscaling.knative.dev/target-utilization-percentage: "70"
     spec:
       initContainers:
         - name: fix-permissions
           image: busybox
           command:
             ["sh", "-c", "chown -R 33:33 /var/www/html/storage/app/public"]
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: false
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
           volumeMounts:
             - name: laravel-storage
               mountPath: /var/www/html/storage/app/public
@@ -25,6 +32,14 @@ spec:
       containers:
         - name: laravel
           image: fierynxx/jaga-bumi:latest
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: false
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
           imagePullPolicy: Always
           ports:
             - containerPort: 80
