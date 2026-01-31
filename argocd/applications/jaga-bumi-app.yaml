@@ -32,3 +32,12 @@ spec:
       kind: Service
       jsonPointers:
         - /spec/template/metadata/annotations
+        - /status
+    - group: serving.knative.dev
+      kind: Revision
+      jsonPointers:
+        - /status
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas
