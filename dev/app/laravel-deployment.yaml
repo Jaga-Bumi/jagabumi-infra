@@ -4,7 +4,6 @@ metadata:
   name: laravel-app
   namespace: jaga-bumi
   annotations:
-    # Retain only last 3 revisions (current + 2 previous)
     serving.knative.dev/revision-history-limit: "3"
 spec:
   template:
