@@ -38,7 +38,7 @@ spec:
 
       containers:
         - name: laravel
-          image: fierynxx/jaga-bumi:2b975e3
+          image: fierynxx/jaga-bumi:d70afcd
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: false
